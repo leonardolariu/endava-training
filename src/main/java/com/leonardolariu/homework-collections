@@ -1,0 +1,19 @@
+tema. simulati procesul de "cache" a ultimelor 20 de postari a unei platforme media. o postare are MACAR un id, un content si un set de taguri!
+
+- flow write. simulati crearea de postari (un nr >> 20). postarile vor avea content si taguri diferite. in momentul in care cache ul este plin si primiti o postare, trebuie sa faceti discard la o postare (FIFO), sa o adaugati pe cea noua si sa faceti update la toate tagurile distincte care se regasesc in cele 20 de postari din cache
+- flow read 1. returnati lista postarilor din cache (sortate dupa ce regula vreti voi). OPTIONAL - puteti primi un param care va indica dupa ce field sa faceti sortarea (e.g. "tags" -> descrescator dupa nr de tag uri, "contentSize" -> crescator dupa nr de caractere din content ul postarii). asta ar fi mai aproape de un real application (unde puteti sorta dupa mai multe criterii), iar efortul ca sa faceti asta nu e asa mare
+- flow read 2. returnati un set cu toate tagurile distincte care se regasesc in cache
+
+cele 3 operatii NU se vor intampla secvential!!! query urile de tipul 1 si 2 vor aparea oricand in timp ce primiti postari, NU doar la final! e ok sa faceti asta intr un singur thread. OPTIONAL - un mare bonus celor care reusesc sa porneasca un thread pt procesarea de mesaje si unul pt procesarea de query uri (heads up - sincronizarea resurselor share uite de cele 2 thread uri e grea comparativ cu restul temei). thread1 va declansa un flow de write post, iar thread2 unul de query1 sau query2 la intervale de timp
+
+indicatii de rezolvare
+- cache ul poate fi reprezentat printr un LinkedList
+- pentru sortare folositi un Comparator
+- ca sa mentineti tagurile si nr de aparitii (stergerea ultimei postari din cache nu inseamna implicit stergerea tagurilor acelei postari! ele pot aparea si in postarile ramase!) puteti folosi un HashMap. cand nr de aparitii al unui tag devine 0, stergeti acel entry din Map! ca sa returnati set ul cerut puteti folosi metoda keySet()
+- ATENTIE - daca faceti mai multe thread uri, amintiti va discutia cu getter ul care returna o instanta noua cu aceleasi valori ca colectia din clasa!
+
+MAI IMPORTANT decat bucatile optionale,voi urmari daca ati tinut cont de SRP si DRY in momentul in care v ati organizat codul. as aprecia foarte mult daca ati izola cat mai mult logica
+- o clasa utilitara care sa va genereze postari random
+- o clasa (probabil Main ul) care sa orchestreze cele 3 tipuri de operatii
+- un serviciu cu logica de business (e.g. regula de modificare a cache ului si update a HashMap ului la scriere sau sortarea la citire)
+- un repository care sa faca store celor 2 structuri (cache si HashMap)

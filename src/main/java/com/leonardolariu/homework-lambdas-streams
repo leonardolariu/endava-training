@@ -1,0 +1,8 @@
+lambdas
+- Make your own functional interfaces for which lambdas can be used. (imagine a scenario to apply this based on existing domain)
+- Create a function with multiple arguments as input. Apply currying for this function using lambda expressions. (imagine a scenario to apply this based on existing domain)
+
+streams
+- read flow 3: Return a set of tags that appear together with a GIVEN tag within latest 20 posts. (stream -> filter (using Predicate interface) -> map/ flatmap -> distinct -> collect)
+- read flow 4: Use a parallel stream to count all tags (including duplicates) within latest 20 posts.
+
